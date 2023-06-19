@@ -46,8 +46,8 @@ data class CaptchaResponse(
 data class SaveUserSettings(
     val show_nsfw: Boolean,
     val theme: String?,
-    val default_sort_type: Int?,
-    val default_listing_type: Int?,
+    val default_sort_type: String?,
+    val default_listing_type: String?,
     val interface_language: String?,
     val avatar: String?,
     val banner: String?,

@@ -31,7 +31,9 @@ class LoginViewModel : ViewModel() {
         private set
     var loading: Boolean by mutableStateOf(false)
         private set
-
+    fun cleanJwt(jwt: String): String {
+        return jwt.replace(Regex("[^a-zA-Z0-9-_.]"), "")
+    }
     fun login(
         instance: String,
         form: Login,
@@ -48,7 +50,7 @@ class LoginViewModel : ViewModel() {
             try {
                 loading = true
                 try {
-                    jwt = retrofitErrorHandler(api.login(form = form)).jwt!! // TODO this needs
+                    jwt = cleanJwt(retrofitErrorHandler(api.login(form = form)).jwt!!) // TODO this needs
                     // to be checked,
                 } catch (e: java.net.UnknownHostException) {
                     loading = false
@@ -91,8 +93,19 @@ class LoginViewModel : ViewModel() {
                 current = true,
                 instance = instance,
                 jwt = jwt,
-                defaultListingType = luv.local_user.default_listing_type,
-                defaultSortType = luv.local_user.default_sort_type,
+                defaultListingType = listOf("All", "Local", "Subscribed").indexOf(luv.local_user.default_listing_type),
+                defaultSortType = listOf(
+                    "Active",
+                    "Hot",
+                    "New",
+                    "Old",
+                    "TopDay",
+                    "TopWeek",
+                    "TopMonth",
+                    "TopYear",
+                    "TopAll",
+                    "MostComments",
+                    "NewComments").indexOf(luv.local_user.default_sort_type),
             )
 
             // Refetch the front page
@@ -100,12 +113,23 @@ class LoginViewModel : ViewModel() {
                 account = account,
                 ctx = ctx,
                 listingType = ListingType.values()[
-                    luv.local_user
-                        .default_listing_type,
+                    listOf("All", "Local", "Subscribed").indexOf(luv.local_user
+                        .default_listing_type),
                 ],
                 sortType = SortType.values()[
-                    luv.local_user
-                        .default_sort_type,
+                    listOf(
+                        "Active",
+                        "Hot",
+                        "New",
+                        "Old",
+                        "TopDay",
+                        "TopWeek",
+                        "TopMonth",
+                        "TopYear",
+                        "TopAll",
+                        "MostComments",
+                        "NewComments").indexOf(luv.local_user
+                            .default_sort_type),
                 ],
                 page = 1,
             )
