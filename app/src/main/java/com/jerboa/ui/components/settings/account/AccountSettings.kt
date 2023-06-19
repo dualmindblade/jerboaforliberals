@@ -210,8 +210,8 @@ fun SettingsForm(
                 stringResource(R.string.account_settings_local),
                 stringResource(R.string.account_settings_subscribed),
             ),
-            onValueChange = { defaultListingType = it },
-            defaultListingType ?: 0,
+            onValueChange = { defaultListingType = listOf("All", "Local", "Subscribed")[it] },
+            0,
             label = stringResource(R.string.account_settings_default_listing_type),
         )
         MyDropDown(
@@ -228,8 +228,20 @@ fun SettingsForm(
                 stringResource(R.string.account_settings_mostcomments),
                 stringResource(R.string.account_settings_newcomments),
             ),
-            onValueChange = { defaultSortType = it },
-            initialValue = defaultSortType ?: 0,
+            onValueChange = { defaultSortType =
+                            listOf(
+                                "Active",
+                                "Hot",
+                                "New",
+                                "Old",
+                                "TopDay",
+                                "TopWeek",
+                                "TopMonth",
+                                "TopYear",
+                                "TopAll",
+                                "MostComments",
+                                "NewComments")[it]},
+            initialValue = 0,
             label = stringResource(R.string.account_settings_default_sort_type),
         )
 

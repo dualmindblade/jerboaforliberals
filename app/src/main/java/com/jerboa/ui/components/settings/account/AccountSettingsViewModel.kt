@@ -38,8 +38,19 @@ class AccountSettingsViewModel(
     }
     private suspend fun maybeUpdateAccountSettings(account: Account, form: SaveUserSettings) {
         val newAccount = account.copy(
-            defaultListingType = form.default_listing_type ?: account.defaultListingType,
-            defaultSortType = form.default_sort_type ?: account.defaultSortType,
+            defaultListingType = listOf("All", "Local", "Subscribed").indexOf(form.default_listing_type ?: account.defaultListingType),
+            defaultSortType = listOf(
+                "Active",
+                "Hot",
+                "New",
+                "Old",
+                "TopDay",
+                "TopWeek",
+                "TopMonth",
+                "TopYear",
+                "TopAll",
+                "MostComments",
+                "NewComments").indexOf(form.default_sort_type ?: account.defaultSortType),
         )
         if (newAccount != account) {
             accountRepository.update(newAccount)
